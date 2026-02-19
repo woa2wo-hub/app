@@ -90,8 +90,6 @@ export const AuthProvider = ({ children }) => {
   // Auth state listener
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      console.log('Auth state changed:', firebaseUser?.email);
-      
       if (firebaseUser) {
         setUser(firebaseUser);
         await loadUserProfile(firebaseUser);
@@ -169,8 +167,6 @@ export const AuthProvider = ({ children }) => {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     sessionStorage.setItem('verificationCode', code);
     sessionStorage.setItem('verificationPhone', phone);
-    console.log('📱 인증번호:', code);
-    alert(`테스트용 인증번호: ${code}`);
     return true;
   };
 

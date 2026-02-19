@@ -39,7 +39,6 @@ const AuthScreen = ({ onSuccess, onSkip, onDemo }) => {
     try {
       await sendVerificationCode(form.phone);
       setCodeSent(true);
-      alert('인증번호가 발송되었습니다. (테스트: 콘솔 확인)');
     } catch (e) {
       setError('인증번호 발송에 실패했습니다');
     } finally {
@@ -70,11 +69,9 @@ const AuthScreen = ({ onSuccess, onSkip, onDemo }) => {
     setLoading(true);
     setError('');
     try {
-      const user = await signUp(form.email, form.password, form.phone);
-      console.log('Signup success:', user.email);
+      await signUp(form.email, form.password, form.phone);
       onSuccess?.('signup', form);
     } catch (e) {
-      console.error('Signup error:', e);
       setError(e.message || '회원가입에 실패했습니다');
     } finally {
       setLoading(false);
@@ -86,12 +83,10 @@ const AuthScreen = ({ onSuccess, onSkip, onDemo }) => {
     setError('');
     try {
       const result = await signInWithGoogle();
-      console.log('Google login result:', result);
       if (result?.user) {
         onSuccess?.('signup', { provider: 'google', isNewUser: result.isNewUser });
       }
     } catch (e) {
-      console.error('Google login error:', e);
       if (e.message === '로그인이 취소되었습니다') {
         setError('로그인이 취소되었습니다');
       } else if (e.code === 'auth/popup-blocked') {
