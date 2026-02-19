@@ -24,13 +24,10 @@ const ContactSyncModal = ({ isOpen, onSync, onSkip }) => {
   if (!isOpen) return null;
   
   const handleSync = () => {
-    // 동기화 처리 (실제로는 연락처 접근 권한 요청)
-    console.log('연락처 동기화 시작');
     onSync?.();
   };
-  
+
   const handleSkip = () => {
-    console.log('연락처 동기화 건너뛰기');
     onSkip?.();
   };
   
@@ -221,33 +218,19 @@ export const ProfileSetupScreen = ({ onComplete, onBack, initialData, isDemo = f
     }
   };
 
-  const finishSetup = async () => {
-    console.log('finishSetup 호출됨, isDemo:', isDemo);
-    try {
-      if (!isDemo && updateProfile) {
-        try {
-          await updateProfile(form);
-          console.log('프로필 업데이트 완료');
-        } catch (updateError) {
-          console.error('Profile update error:', updateError);
-          // 업데이트 실패해도 계속 진행
-        }
-      }
-    } catch (error) {
-      console.error('finishSetup error:', error);
+  const finishSetup = () => {
+    if (!isDemo && updateProfile) {
+      updateProfile(form).catch(() => {});
     }
-    // 항상 쿠폰 모달 표시
     setShowCoupon(true);
   };
 
   const handleContactSync = () => {
-    console.log('handleContactSync 호출됨');
     setShowContactSync(false);
     finishSetup();
   };
 
   const handleContactSkip = () => {
-    console.log('handleContactSkip 호출됨');
     setShowContactSync(false);
     finishSetup();
   };
